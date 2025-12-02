@@ -2,7 +2,7 @@ package io.github.biqcat.dowmapviewer.gamemap
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.io.InputStream
+import java.io.BufferedInputStream
 
 
 @Parcelize
@@ -14,7 +14,7 @@ class GameMap(
     val entities: HashMap<Int, Entity>
 ) : Parcelable {
     companion object {
-        fun fromSGB(sgbInputStream: InputStream) : GameMap {
+        fun fromSGB(sgbInputStream: BufferedInputStream): GameMap {
             TODO("Not yet implemented")
         }
     }

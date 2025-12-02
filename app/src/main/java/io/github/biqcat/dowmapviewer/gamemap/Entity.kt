@@ -1,6 +1,5 @@
 package io.github.biqcat.dowmapviewer.gamemap
 
-import android.graphics.Bitmap
 import android.os.Parcelable
 import androidx.annotation.DrawableRes
 import io.github.biqcat.dowmapviewer.R

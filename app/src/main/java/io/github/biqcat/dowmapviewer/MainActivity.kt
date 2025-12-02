@@ -7,18 +7,17 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.MimeTypeFilter
-import androidx.core.net.toFile
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import io.github.biqcat.dowmapviewer.gamemap.GameMap
-import java.io.InputStreamReader
 
 class MainActivity : AppCompatActivity() {
     private val openSGB = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             contentResolver.openInputStream(uri)?.use { sgbInputStream ->
-                val gameMap = GameMap.fromSGB(sgbInputStream)
+                val bufferedInput = sgbInputStream.buffered()
+                val gameMap = GameMap.fromSGB(bufferedInput)
+                bufferedInput.close()
 
                 val intent = Intent(this, RenderActivity::class.java)
                 intent.putExtra(GAME_MAP, gameMap)

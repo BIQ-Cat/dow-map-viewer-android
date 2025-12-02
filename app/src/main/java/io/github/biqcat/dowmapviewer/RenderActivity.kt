@@ -20,7 +20,8 @@ class RenderActivity : AppCompatActivity() {
             insets
         }
 
-        val gameMap: GameMap? = intent.getParcelableExtra(MainActivity.GAME_MAP, GameMap::class.java)
+        @Suppress("DEPRECATION") val gameMap: GameMap? =
+            intent.getParcelableExtra(MainActivity.GAME_MAP)
         Snackbar.make(findViewById(R.id.main), gameMap?.width.toString(), Snackbar.LENGTH_LONG).show()
         Snackbar.make(findViewById(R.id.main), gameMap?.height.toString(), Snackbar.LENGTH_LONG).show()
         Toast.makeText(applicationContext, gameMap?.heightMap?.size.toString(), Toast.LENGTH_SHORT).show()
