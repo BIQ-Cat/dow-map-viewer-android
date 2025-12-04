@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Dow Map Viewer</string>
-    <string name="choose_file">Choose file</string>
-    <string name="open_sgb_map">Open .SGB map</string>
+    <string name="choose_file">Select SGB and texture to render map</string>
+    <string name="open_sgb_map">Render map from .SGB</string>
     <string name="no_file_was_chosen">No file was chosen</string>
+    <string name="got_bitmap">Got bitmap!</string>
 </resources>

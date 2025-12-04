@@ -1,6 +1,8 @@
 package io.github.biqcat.dowmapviewer
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -12,16 +14,31 @@ import androidx.core.view.WindowInsetsCompat
 import io.github.biqcat.dowmapviewer.gamemap.GameMap
 
 class MainActivity : AppCompatActivity() {
+    private var gameMapTexture: Bitmap? = null
+
     private val openSGB = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         if (uri != null) {
             contentResolver.openInputStream(uri)?.use { sgbInputStream ->
-                val bufferedInput = sgbInputStream.buffered()
-                val gameMap = GameMap.fromSGB(bufferedInput)
-                bufferedInput.close()
+                val gameMap = sgbInputStream.buffered().use { bufferedInputStream ->
+                    GameMap.fromSGB(bufferedInputStream)
+                }
+
+                if (gameMapTexture != null)
+                    gameMap.texture = gameMapTexture!!
 
                 val intent = Intent(this, RenderActivity::class.java)
                 intent.putExtra(GAME_MAP, gameMap)
                 startActivity(intent)
+            }
+        } else {
+            Toast.makeText(applicationContext, R.string.no_file_was_chosen, Toast.LENGTH_SHORT)
+        }
+    }
+
+    val selectTexture = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        if (uri != null) {
+            contentResolver.openFileDescriptor(uri, "r")?.use { parcelFd ->
+                gameMapTexture = BitmapFactory.decodeFileDescriptor(parcelFd.fileDescriptor)
             }
         } else {
             Toast.makeText(applicationContext, R.string.no_file_was_chosen, Toast.LENGTH_SHORT)
@@ -38,7 +55,12 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        findViewById<Button>(R.id.choose_file).setOnClickListener {
+        findViewById<Button>(R.id.choose_texture).setOnClickListener {
+            selectTexture.launch("image/x-tga")
+            (it as Button).setText(R.string.got_bitmap)
+        }
+
+        findViewById<Button>(R.id.render_sgb).setOnClickListener {
             openSGB.launch("application/octet-stream")
         }
     }
