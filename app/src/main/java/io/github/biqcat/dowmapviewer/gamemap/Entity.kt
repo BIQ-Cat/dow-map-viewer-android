@@ -53,7 +53,6 @@ enum class Entity(@field:DrawableRes val colorMapDrawableRes: Int) : Parcelable 
         }
     },
     Spawn(R.drawable.spawn_color_map) {
-
         override fun getHeightMap(): List<List<Int>> {
             return listOf(
                 listOf(0, 2, 0, 2, 2, 2, 2, 2, 0),
